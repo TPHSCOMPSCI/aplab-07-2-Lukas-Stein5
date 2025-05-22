@@ -259,21 +259,21 @@ public class Steganography {
 
         Picture swan1 = new Picture("swan.jpg");
         Picture swan2 = new Picture("swan.jpg");
-        System.out.println("Are they same? " + isSame(swan1, swan2));
+        System.out.println("\nSame?:  " + isSame(swan1, swan2));
         swan1 = testClearLow(swan1);
-        System.out.println("After clearing low bits: " + isSame(swan1, swan2));
+        System.out.println("\nAfter clearing low bits: " + isSame(swan1, swan2));
 
         Picture a1 = new Picture("arch.jpg");
         Picture a2 = new Picture("arch.jpg");
         Picture k = new Picture("koala.jpg");
         Picture r = new Picture("robot.jpg");
         ArrayList<Point> diffs = findDifferences(a1, a2);
-        System.out.println("Size: " + diffs.size());
+        System.out.println("\nWhat is the size: " + diffs.size());
         diffs = findDifferences(a1, k);
-        System.out.println("Size: " + diffs.size());
+        System.out.println("\nWhat is the size: " + diffs.size());
         a2 = hidePicture(a1, r, 65, 102);
         diffs = findDifferences(a1, a2);
-        System.out.println("Size after hiding: " + diffs.size());
+        System.out.println("\nSize after hiding: " + diffs.size());
         a1.show();
         a2.show();
 
@@ -291,9 +291,9 @@ public class Steganography {
         }
 
         Picture msgPic = new Picture("beach.jpg");
-        hideText(msgPic, "THIS IS THE SECRET MESSAGE WRITTEN BY LUKAS");
+        hideText(msgPic, "THIS IS THE SECRET MESSAGE WRITTEN BY ME");
         String hiddenText = revealText(msgPic);
-        System.out.println("Message: " + hiddenText);
+        System.out.println("\nMessage: " + hiddenText);
 
         Picture bike = new Picture("blueMotorcycle.jpg");
         bike.explore();
