@@ -291,7 +291,7 @@ public class Steganography {
         }
 
         Picture msgPic = new Picture("beach.jpg");
-        hideText(msgPic, "THIS IS THE SECRET MESSAGE");
+        hideText(msgPic, "THIS IS THE SECRET MESSAGE WRITTEN BY LUKAS");
         String hiddenText = revealText(msgPic);
         System.out.println("Message: " + hiddenText);
 
