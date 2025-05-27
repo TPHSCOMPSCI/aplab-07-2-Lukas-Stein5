@@ -264,9 +264,9 @@ public class Steganography {
         Picture k = new Picture("koala.jpg");
         Picture r = new Picture("robot.jpg");
         ArrayList<Point> diffs = findDifferences(a1, a2);
-        System.out.println("\nWhat is the size: " + diffs.size());
+        System.out.println("\nSize: " + diffs.size());
         diffs = findDifferences(a1, k);
-        System.out.println("\nWhat is the size: " + diffs.size());
+        System.out.println("\nSize: " + diffs.size());
         a2 = hidePicture(a1, r, 65, 102);
         diffs = findDifferences(a1, a2);
         System.out.println("\nSize after hiding: " + diffs.size());
