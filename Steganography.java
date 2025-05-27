@@ -2,16 +2,12 @@ import java.awt.*;
 import java.util.*;
 
 public class Steganography {
-<<<<<<< HEAD
     /**
      * Clears the low bits of the pixel color.
      * The low bits are set to 0.
      *
      * @param px The pixel to modify.
      */
-=======
-    
->>>>>>> 99a703255377d7f47f447a4e7be61d45d36a4732
     public static void clearLow(Pixel px) {
         int r = px.getRed() & 0b11111100; // Clear the last two bits
         int g = px.getGreen() & 0b11111100; 
@@ -27,17 +23,9 @@ public class Steganography {
      * @return A new Picture object with the modified pixels.
      */
     public static Picture testClearLow(Picture img) {
-<<<<<<< HEAD
         Picture copy = new Picture(img);
        for(Pixel px : copy.getPixels()) {
             clearLow(px);
-=======
-        Picture result = new Picture(img);
-        for (Pixel[] row : result.getPixels2D()) {
-            for (Pixel px : row) {
-                clearLow(px);
-            }
->>>>>>> 99a703255377d7f47f447a4e7be61d45d36a4732
         }
         return copy;
     }
@@ -49,19 +37,10 @@ public class Steganography {
      * @param col The color whose low bits will be used.
      */
     public static void setLow(Pixel px, Color col) {
-<<<<<<< HEAD
         int r = px.getRed() / 4 * 4; // Clear the last two bits
         int g = px.getGreen() / 4 * 4;
         int b = px.getBlue() / 4 * 4;
         
-=======
-        clearLow(px);
-        
-        int r = px.getRed();
-        int g = px.getGreen();
-        int b = px.getBlue();
-
->>>>>>> 99a703255377d7f47f447a4e7be61d45d36a4732
         int rLow = col.getRed() / 64;
         int gLow = col.getGreen() / 64;
         int bLow = col.getBlue() / 64;
@@ -83,7 +62,8 @@ public class Steganography {
 
     public static Picture testSetLow(Picture img, Color col) {
         Picture copy = new Picture(img);
-        for (Pixel[] row : copy.getPixels2D()) {
+        Pixel[][] grid = copy.getPixels2D();
+        for (Pixel[] row : grid) {
             for (Pixel px : row) {
                 setLow(px, col);
             }
@@ -129,20 +109,26 @@ public class Steganography {
     }
 
     public static Picture hidePicture(Picture main, Picture secret, int rStart, int cStart) {
-    Picture result = new Picture(main);
-    Pixel[][] mainPixels = result.getPixels2D();
-    Pixel[][] secretPixels = secret.getPixels2D();
+        Picture merged = new Picture(main);
+        Pixel[][] mainPixels = merged.getPixels2D();
+        Pixel[][] secretPixels = secret.getPixels2D();
 
-    for (int r = 0; r < secretPixels.length; r++) {
-        for (int c = 0; c < secretPixels[0].length; c++) {
-            int row = rStart + r;
-            int col = cStart + c;
-            if (row < mainPixels.length && col < mainPixels[0].length) {
-                setLow(mainPixels[row][col], secretPixels[r][c].getColor());
+        for (int r = 0; r < secretPixels.length; r++) {
+            for (int c = 0; c < secretPixels[0].length; c++) {
+                int rPos = rStart + r;
+                int cPos = cStart + c;
+                if (rPos < mainPixels.length && cPos < mainPixels[0].length) {
+                    Color secretCol = secretPixels[r][c].getColor();
+                    Color mainCol = mainPixels[rPos][cPos].getColor();
+                    int rNew = (mainCol.getRed() / 4 * 4) + (secretCol.getRed() / 64);
+                    int gNew = (mainCol.getGreen() / 4 * 4) + (secretCol.getGreen() / 64);
+                    int bNew = (mainCol.getBlue() / 4 * 4) + (secretCol.getBlue() / 64);
+                    mainPixels[rPos][cPos].setColor(new Color(rNew, gNew, bNew));
+                }
             }
         }
+        return merged;
     }
-<<<<<<< HEAD
 
     /**
      * Compares two pictures to see if they are the same.
@@ -154,11 +140,6 @@ public class Steganography {
      * @return true if the pictures are the same, false otherwise.
      */
 
-=======
-    return result;
-}
-    
->>>>>>> 99a703255377d7f47f447a4e7be61d45d36a4732
     public static boolean isSame(Picture one, Picture two) {
         if (one.getWidth() != two.getWidth() || one.getHeight() != two.getHeight()) {
             return false;
@@ -403,15 +384,9 @@ public class Steganography {
         Picture k = new Picture("koala.jpg");
         Picture r = new Picture("robot.jpg");
         ArrayList<Point> diffs = findDifferences(a1, a2);
-<<<<<<< HEAD
         System.out.println("\nWhat is the size of the diffs list after comparing two identical pictures: " + diffs.size());
         diffs = findDifferences(a1, k);
         System.out.println("What is the size of the diffs list after comparing two different sized pictures: " + diffs.size());
-=======
-        System.out.println("\nSize: " + diffs.size());
-        diffs = findDifferences(a1, k);
-        System.out.println("\nSize: " + diffs.size());
->>>>>>> 99a703255377d7f47f447a4e7be61d45d36a4732
         a2 = hidePicture(a1, r, 65, 102);
         diffs = findDifferences(a1, a2);
         System.out.println("Diffs list size after hiding a picture: " + diffs.size());
