@@ -2,6 +2,7 @@ import java.awt.*;
 import java.util.*;
 
 public class Steganography {
+    
     public static void clearLow(Pixel px) {
         int r = (px.getRed() / 4) * 4;
         int g = (px.getGreen() / 4) * 4;
@@ -11,8 +12,7 @@ public class Steganography {
 
     public static Picture testClearLow(Picture img) {
         Picture result = new Picture(img);
-        Pixel[][] grid = result.getPixels2D();
-        for (Pixel[] row : grid) {
+        for (Pixel[] row : result.getPixels2D()) {
             for (Pixel px : row) {
                 clearLow(px);
             }
@@ -21,6 +21,8 @@ public class Steganography {
     }
 
     public static void setLow(Pixel px, Color col) {
+        clearLow(px);
+        
         int r = px.getRed();
         int g = px.getGreen();
         int b = px.getBlue();
@@ -38,8 +40,7 @@ public class Steganography {
 
     public static Picture testSetLow(Picture img, Color col) {
         Picture copy = new Picture(img);
-        Pixel[][] grid = copy.getPixels2D();
-        for (Pixel[] row : grid) {
+        for (Pixel[] row : copy.getPixels2D()) {
             for (Pixel px : row) {
                 setLow(px, col);
             }
@@ -69,27 +70,22 @@ public class Steganography {
     }
 
     public static Picture hidePicture(Picture main, Picture secret, int rStart, int cStart) {
-        Picture merged = new Picture(main);
-        Pixel[][] mainPixels = merged.getPixels2D();
-        Pixel[][] secretPixels = secret.getPixels2D();
+    Picture result = new Picture(main);
+    Pixel[][] mainPixels = result.getPixels2D();
+    Pixel[][] secretPixels = secret.getPixels2D();
 
-        for (int r = 0; r < secretPixels.length; r++) {
-            for (int c = 0; c < secretPixels[0].length; c++) {
-                int rPos = rStart + r;
-                int cPos = cStart + c;
-                if (rPos < mainPixels.length && cPos < mainPixels[0].length) {
-                    Color secretCol = secretPixels[r][c].getColor();
-                    Color mainCol = mainPixels[rPos][cPos].getColor();
-                    int rNew = (mainCol.getRed() / 4 * 4) + (secretCol.getRed() / 64);
-                    int gNew = (mainCol.getGreen() / 4 * 4) + (secretCol.getGreen() / 64);
-                    int bNew = (mainCol.getBlue() / 4 * 4) + (secretCol.getBlue() / 64);
-                    mainPixels[rPos][cPos].setColor(new Color(rNew, gNew, bNew));
-                }
+    for (int r = 0; r < secretPixels.length; r++) {
+        for (int c = 0; c < secretPixels[0].length; c++) {
+            int row = rStart + r;
+            int col = cStart + c;
+            if (row < mainPixels.length && col < mainPixels[0].length) {
+                setLow(mainPixels[row][col], secretPixels[r][c].getColor());
             }
         }
-        return merged;
     }
-
+    return result;
+}
+    
     public static boolean isSame(Picture one, Picture two) {
         if (one.getWidth() != two.getWidth() || one.getHeight() != two.getHeight()) {
             return false;
