@@ -209,7 +209,7 @@ public class Steganography {
         }
 
         Graphics2D g = highlighted.createGraphics();
-        g.setColor(Color.BLUE);
+        g.setColor(Color.RED);
         g.drawRect(minC, minR, maxC - minC, maxR - minR);
         g.dispose();
 
